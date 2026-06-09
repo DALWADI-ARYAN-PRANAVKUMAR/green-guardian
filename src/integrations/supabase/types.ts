@@ -14,7 +14,93 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activities: {
+        Row: {
+          action: string
+          category: string
+          created_at: string
+          id: string
+          kg_co2e: number
+          notes: string | null
+          occurred_at: string
+          quantity: number
+          unit: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          category: string
+          created_at?: string
+          id?: string
+          kg_co2e: number
+          notes?: string | null
+          occurred_at?: string
+          quantity?: number
+          unit: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          category?: string
+          created_at?: string
+          id?: string
+          kg_co2e?: number
+          notes?: string | null
+          occurred_at?: string
+          quantity?: number
+          unit?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          country: string | null
+          created_at: string
+          daily_goal_kg: number
+          display_name: string | null
+          id: string
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          daily_goal_kg?: number
+          display_name?: string | null
+          id: string
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          daily_goal_kg?: number
+          display_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
