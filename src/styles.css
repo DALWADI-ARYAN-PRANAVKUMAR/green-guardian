@@ -114,6 +114,7 @@
 
   --destructive: oklch(0.55 0.22 28);                /* #ba1a1a */
   --destructive-foreground: oklch(1 0 0);
+  --error-container: oklch(0.92 0.05 25);             /* #ffdad6 */
   --success: oklch(0.55 0.14 160);
   --success-foreground: oklch(1 0 0);
   --warn: oklch(0.82 0.16 70);
