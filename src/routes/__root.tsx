@@ -58,9 +58,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Verdant — Personal carbon coach" },
-      { name: "description", content: "Track your daily carbon footprint and get personalized AI guidance." },
-      { name: "theme-color", content: "#0B3D2E" },
+      { title: "EcoTrace — Personal carbon coach" },
+      { name: "description", content: "Quantify your environmental impact. Track your carbon footprint and get personalized AI guidance." },
+      { name: "theme-color", content: "#012d1d" },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
   }),
