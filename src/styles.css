@@ -60,6 +60,7 @@
   --color-outline: var(--outline);
   --color-outline-variant: var(--outline-variant);
   --color-on-surface-variant: var(--on-surface-variant);
+  --color-error-container: var(--error-container);
 
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
