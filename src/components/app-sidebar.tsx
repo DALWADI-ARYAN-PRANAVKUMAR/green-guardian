@@ -62,12 +62,12 @@ export function AppSidebar() {
       </nav>
 
       <div className="px-3 mt-auto space-y-1 pt-4 border-t border-outline-variant">
-        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition">
+        <Link to="/settings" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition" activeProps={{ className: "bg-primary-container text-on-primary-container" }}>
           <Settings className="size-5" /> Settings
-        </button>
-        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition">
+        </Link>
+        <Link to="/support" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition" activeProps={{ className: "bg-primary-container text-on-primary-container" }}>
           <LifeBuoy className="size-5" /> Support
-        </button>
+        </Link>
         <button onClick={signOut} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition">
           <LogOut className="size-5" /> Sign out
         </button>
