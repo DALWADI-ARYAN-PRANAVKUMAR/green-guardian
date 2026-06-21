@@ -68,8 +68,8 @@ export function AppSidebar() {
         <Link to="/support" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition" activeProps={{ className: "bg-primary-container text-on-primary-container" }}>
           <LifeBuoy className="size-5" /> Support
         </Link>
-        <button onClick={signOut} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition">
-          <LogOut className="size-5" /> Sign out
+        <button onClick={signOut} aria-label="Sign out of EcoTrace" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition">
+          <LogOut className="size-5" aria-hidden="true" /> Sign out
         </button>
       </div>
     </aside>
