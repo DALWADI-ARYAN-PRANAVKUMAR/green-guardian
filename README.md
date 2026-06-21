@@ -1,125 +1,198 @@
-# Verdant — Personal Carbon Footprint Coach
+# EcoTrace — Personal Carbon Footprint Tracker
 
-A smart, dynamic assistant that helps individuals understand, track, and reduce their carbon footprint through simple actions and personalized insights.
+> A full-stack web application that helps individuals quantify, understand, and reduce their environmental impact through smart activity logging, real-time analytics, and an AI-powered carbon coach.
 
-> Built for the Lovable challenge. Stack: TanStack Start (React 19 + Vite 7), Lovable Cloud (Supabase: Postgres + Auth + RLS), Lovable AI Gateway (Google Gemini), Tailwind v4, Recharts.
+---
 
-## Chosen vertical
+## 1. Chosen Vertical
 
-**Personal sustainability / climate-tech.** Specifically: a daily carbon-footprint tracker with an AI climate coach for individuals who want to reduce emissions without guilt or spreadsheets.
+**Climate Tech / Environmental Impact Tracking**
 
-## What it does
+EcoTrace sits at the intersection of **personal productivity** and **environmental stewardship**. The vertical was chosen because:
 
-1. **Sign in** (email/password or Google) — every user has private, sync'd data.
-2. **Log activities** in seconds using presets across 5 categories — Transport, Food, Energy, Shopping, Waste. Each preset has a calibrated emission factor (kg CO₂e per unit).
-3. **See your footprint** today and over the last 7 days, broken down by category, compared to the global average (~12.5 kg/day) and the Paris-aligned target (~5.5 kg/day).
-4. **Chat with the coach** — an AI assistant ("Verdant") that reads your actual activity log and gives concrete, quantified, non-judgmental suggestions.
+- **High real-world relevance**: Every person generates a carbon footprint through transport, food, energy, and consumption choices.
+- **Data-driven behavior change**: Research shows that quantified self-tracking measurably shifts habits when feedback is immediate and personalized.
+- **AI augmentation potential**: A generic "green tips" article is forgettable; advice grounded in a user's actual logged data is actionable.
 
-## Approach and logic
+The product targets environmentally conscious individuals who want accountability and practical guidance without judgment.
 
-### Tracking
-A small, curated set of presets (`src/lib/emissions.ts`) covers ~90% of personal emissions. Each preset has:
-- a `category`, `action`, and `unit`
-- a `factor` in kg CO₂e per unit (sourced from UK DEFRA 2023, EPA, Our World in Data)
+---
 
-The server computes `kg_co2e = factor × quantity` on insert — clients can't forge the math. Activities are stored per user with RLS so each user can only see their own data.
+## 2. Approach & Logic
 
-### Smart assistant logic
-Each chat turn (`src/lib/chat.functions.ts`) does:
-1. Persists the user message.
-2. Loads the **last 40 chat turns** for conversational memory.
-3. Loads the **last 60 activity rows** and computes a compact context block: today's total, 7-day total, top categories, and a recent log excerpt.
-4. Sends `system + context + history + new message` to `google/gemini-3-flash-preview` via the Lovable AI Gateway.
-5. Persists the assistant reply.
+### Design Philosophy
+- **Transparency over perfection**: Users see raw kg CO₂e numbers, not vague scores or hidden formulas.
+- **Contextual intelligence**: The AI coach doesn't give generic advice — it reads the user's last 60 activities and tailors every response.
+- **Benchmark-driven goals**: Daily totals are compared against a Paris-aligned climate target (~5.5 kg/day) and the global average (~12.5 kg/day), making abstract numbers concrete.
 
-The system prompt constrains the model to:
-- Be concise (2–5 short paragraphs / tight bullets).
-- Quantify impact in kg CO₂e where useful.
-- Prefer **high-leverage** actions (transport, diet, home energy) over micro-tips.
-- Ground every tip in the user's actual logged activity — **never invent data**.
-- Stay on-topic and non-judgmental.
+### Architectural Decisions
 
-This is the "dynamic decision making based on user context" — same question produces different answers depending on what the user actually logged.
+| Decision | Rationale |
+|----------|-----------|
+| **TanStack Start (React + SSR)** | File-based routing, type-safe navigation, and server functions in one framework. Eliminates the need for a separate REST API layer. |
+| **Server Functions (`createServerFn`)** | Business logic (emission calculations, AI calls) runs server-side so users cannot spoof `kg_co2e` values. |
+| **Row-Level Security (RLS)** | Every database table is scoped to `auth.uid()`. Users can never read or mutate another user's data. |
+| **AI Gateway with context injection** | Before every chat turn, the server summarises the user's last 7 days of activity and injects it into the system prompt. This gives the LLM real memory without expensive RAG infrastructure. |
+| **Preset-based logging** | Instead of asking users to know emission factors, we provide 20 curated presets (e.g., "Petrol car", "Beef meal") sourced from DEFRA/EPA data. One tap → instant calculation. |
 
-### Insights
-The dashboard derives:
-- **Today vs. goal** (configurable; default 10 kg)
-- **Today vs. global avg / Paris target** with traffic-light tone
-- **Last 7 days** bar chart (red bars on goal-bust days)
-- **Category breakdown** donut chart
+---
 
-## How the solution works (architecture)
+## 3. How the Solution Works
+
+### 3.1 User Flow
 
 ```
-┌──────────────┐    server fns    ┌────────────────────┐
-│ React routes │ ───────────────▶ │ createServerFn     │
-│ (TanStack)   │                  │ + requireSupabase  │
-│              │                  │   Auth middleware  │
-└──────┬───────┘                  └─────────┬──────────┘
-       │                                    │
-       │ Lovable AI Gateway                 │ RLS-scoped queries
-       │ (server-only)                      ▼
-       │                          ┌────────────────────┐
-       ▼                          │ Lovable Cloud      │
-┌──────────────┐                  │ (Supabase Postgres)│
-│ Gemini 3     │                  │  activities        │
-│ Flash        │                  │  chat_messages     │
-└──────────────┘                  │  profiles          │
-                                  └────────────────────┘
+Landing Page ──► Sign Up / Log In ──► Dashboard
+                                          │
+                    ┌─────────────────────┼─────────────────────┐
+                    ▼                     ▼                     ▼
+              Log Activity           AI Coach Chat           Settings / Support
+                    │                     │
+                    └──────────► History Log (all activities)
 ```
 
-- **Routes** — `/` landing, `/auth` sign in, `/app` dashboard, `/coach` chat. All authenticated routes live under `_authenticated/` which gates access via `supabase.auth.getUser()`.
-- **Server functions** — `src/lib/activities.functions.ts` and `src/lib/chat.functions.ts`. Every fn uses `requireSupabaseAuth` middleware and Zod input validation.
-- **AI** — `src/lib/ai-gateway.server.ts` wires the AI SDK to the Lovable AI Gateway. `LOVABLE_API_KEY` never leaves the server.
-- **Database** — three tables, all RLS-protected with `auth.uid() = user_id` policies; a `handle_new_user` trigger seeds a profile on signup.
+### 3.2 Core Features
 
-## Evaluation focus areas
+#### Activity Logging
+- Users pick from **20 presets** across 5 categories: Transport, Food, Energy, Shopping, Waste.
+- The server computes `kg_co2e = factor × quantity` using verified emission coefficients.
+- Each log is stored with full audit fields: `category`, `action`, `quantity`, `unit`, `kg_co2e`, `occurred_at`, `notes`.
 
-| Area | How it's addressed |
-|---|---|
-| **Code quality** | Strict TypeScript, route/server-fn separation, small focused modules, Zod-validated inputs, no any. |
-| **Security** | RLS on every table, server-side emission math, secrets only in server fns, Google OAuth via Lovable broker, security-definer trigger locked down (`REVOKE EXECUTE`), input length/range caps on every Zod schema. |
-| **Efficiency** | Bundled Gemini Flash (fast/cheap), context window capped at 40 msgs / 60 activities, indexed `(user_id, occurred_at desc)`, TanStack Query caching, single-flight mutations. |
-| **Testing** | Functionality validated end-to-end via the live preview (signup → log → chart updates → coach responds with the logged data). Pure helpers in `src/lib/emissions.ts` (`computeKg`, `presetById`) are deterministic and trivially unit-testable. |
-| **Accessibility** | Semantic HTML, labeled form fields, `aria-label` on icon buttons, keyboard-submit on the composer (Enter to send / Shift+Enter for newline), focus-visible rings via design tokens, sufficient color contrast (deep forest on cream, primary-foreground on primary), reduced-motion-friendly subtle animations only. |
+#### Dashboard Analytics
+- **Carbon Summary**: Stacked bar chart (Energy / Transport / Food) over the last 7 days.
+- **Efficiency Score**: A 0–100 score derived from `todayKg / dailyGoal`. Higher = closer to target.
+- **Benchmark Panel**: Compares the user's 30-day total against the global average and the Paris-aligned target.
+- **Smart Recommendations**: Surfaces the user's highest-emission category and suggests talking to the AI coach.
 
-## Assumptions
+#### AI Carbon Coach
+- Multi-turn conversational interface.
+- Every user message triggers a server function that:
+  1. Persists the message to `chat_messages`.
+  2. Fetches the last **40 chat turns** (conversation memory).
+  3. Fetches the last **60 activities** (behavioral context).
+  4. Summarises activity data into a compact context block (today's total, 7-day breakdown, recent log).
+  5. Sends the full prompt + context to a Gemini model via the Lovable AI Gateway.
+  6. Persists the assistant reply and returns it to the client.
+- Graceful degradation on 429/402 errors with user-friendly messages stored in history.
 
-- **Emission factors are approximations**, suitable for personal awareness — not carbon accounting/auditing. Sources noted in `src/lib/emissions.ts`.
-- **Single conversation per user.** Sufficient for a coaching use case; threading would add UX friction without information value.
-- **English-only** copy and UI.
-- **One unit per preset** (e.g. "km", "meal", "kWh") to keep logging fast.
-- **Daily granularity** for activities (no time-of-day).
-- **AI replies stream-free** (single response). Latency is sub-2s on Gemini Flash, simpler to persist atomically, and acceptable for a coaching cadence.
-- The Paris-aligned daily target of 5.5 kg corresponds to a ~2 t/yr per-capita budget consistent with 1.5 °C pathways.
+#### Settings & Support
+- **Edit Profile**: Update display name.
+- **Change Password**: Secure password update via Supabase Auth.
+- **Wipe Activities**: One-click deletion of all logged data with confirmation.
+- **Support Page**: FAQ and contact channel for user assistance.
 
-## Local dev
+### 3.3 Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | TanStack Start (React 19 + Vite 7 + SSR) |
+| Styling | Tailwind CSS v4 with semantic design tokens |
+| UI Components | Radix UI primitives + shadcn/ui patterns |
+| Database | PostgreSQL (via Supabase) |
+| Auth | Supabase Auth with email/password + Google OAuth |
+| Server Logic | `createServerFn` with Zod input validation |
+| AI | Lovable AI Gateway (Gemini 3 Flash) |
+| Charts | Recharts |
+| Icons | Lucide React |
+| Testing | Vitest (unit tests for emission math) |
+
+### 3.4 Data Model
+
+```sql
+profiles
+  id (uuid, PK)          → links to auth.users
+  display_name (text)
+  daily_goal_kg (float)  → default 10.0
+
+activities
+  id (uuid, PK)
+  user_id (uuid, FK)     → RLS: user can only see own rows
+  category (enum)
+  action (text)
+  quantity (float)
+  unit (text)
+  kg_co2e (float)        → server-computed, immutable
+  occurred_at (date)
+  notes (text)
+
+chat_messages
+  id (uuid, PK)
+  user_id (uuid, FK)
+  role (user | assistant)
+  content (text)
+  created_at (timestamp)
+```
+
+### 3.5 Security Model
+
+- **RLS policies**: Every `SELECT / INSERT / UPDATE / DELETE` on `activities`, `profiles`, and `chat_messages` is gated to `auth.uid() = user_id`.
+- **Input validation**: All server functions use Zod schemas to enforce type safety and bound checks (e.g., `quantity` capped at 100,000).
+- **Server-side computation**: Carbon math runs in the `createServerFn` handler, not the client. A malicious client cannot send a fake `kg_co2e` value.
+- **Environment isolation**: AI keys and service-role credentials are server-only; the browser receives only the publishable Supabase key.
+- **HIBP protection**: Passwords are checked against Have I Been Pwned during sign-up to prevent the use of leaked credentials.
+
+---
+
+## 4. Assumptions Made
+
+1. **Single-user context per account**: The app is designed for personal tracking. Household or team aggregation is out of scope.
+
+2. **Preset coverage is sufficient**: The 20 emission presets capture the highest-leverage personal choices (car, bus, beef, electricity, etc.). Users cannot add custom factors; this keeps calculations trustworthy but limits niche use cases.
+
+3. **Static emission factors**: Factors are based on UK DEFRA 2023 / EPA averages and do not vary by country, grid mix, or season. The app trades precision for simplicity and broad applicability.
+
+4. **Daily goal as primary metric**: Users are nudged toward a daily kg target rather than a monthly or annual budget, because daily feedback loops are more effective for habit formation.
+
+5. **AI as a coach, not an oracle**: The assistant gives directional guidance ("swapping 2 beef meals saves ~13 kg") rather than certified carbon audits. A disclaimer notes that estimates are approximations.
+
+6. **Modern browser target**: The app assumes a modern browser with ES2022+ support, as the stack uses React 19, Tailwind v4, and native CSS features.
+
+---
+
+## 5. Getting Started (Development)
 
 ```bash
+# Install dependencies
 bun install
-bun dev          # opens http://localhost:5173
+
+# Start the dev server
+bun run dev
+
+# Run tests
+bunx vitest run
 ```
 
-Lovable Cloud is auto-provisioned; `LOVABLE_API_KEY`, `SUPABASE_URL`, and `SUPABASE_PUBLISHABLE_KEY` are injected.
+### Required Environment Variables
 
-## File map (essentials)
+```
+VITE_SUPABASE_URL=
+VITE_SUPABASE_PUBLISHABLE_KEY=
+LOVABLE_API_KEY=
+```
+
+---
+
+## 6. Project Structure
 
 ```
 src/
+  routes/              # File-based routes (TanStack Router)
+    _authenticated/    # Protected app pages (dashboard, coach, log, settings, support)
+    auth.tsx           # Login / signup page
+    index.tsx          # Marketing landing page
   lib/
-    emissions.ts             Pure: presets, categories, factors, computeKg
-    ai-gateway.server.ts     AI SDK ↔ Lovable AI Gateway
-    activities.functions.ts  log/list/delete + profile/goal
-    chat.functions.ts        list/send/clear + system prompt + context builder
-  routes/
-    __root.tsx               Providers, auth listener, error/404 boundaries
-    index.tsx                Landing page
-    auth.tsx                 Sign in / up + Google
-    _authenticated/
-      route.tsx              Auth gate (ssr:false)
-      app.tsx                Dashboard
-      coach.tsx              AI chat
-    sitemap[.]xml.ts         Sitemap
-  styles.css                 Design tokens (bold-climate palette)
-  assets/logo.png            Brand mark
+    emissions.ts       # Carbon factors, presets, calculation logic
+    emissions.test.ts  # Unit tests for emission math
+    activities.functions.ts  # Server functions: CRUD for activities + profile
+    chat.functions.ts  # Server functions: chat history, AI inference
+  components/
+    app-sidebar.tsx    # Navigation sidebar + mobile nav
+    ui/                # shadcn/ui component primitives
+  integrations/
+    supabase/          # Auth middleware, typed client, attacher
+  styles.css           # Global theme tokens (Tailwind v4)
 ```
+
+---
+
+*Built with Lovable + TanStack Start.*
