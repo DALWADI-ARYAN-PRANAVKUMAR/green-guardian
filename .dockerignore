@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.output
+dist
+.wrangler
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage
+
+# Misc
+.DS_Store
+*.pem

@@ -172,6 +172,28 @@ LOVABLE_API_KEY=
 
 ---
 
+## 6. Docker (Self-Hosted)
+
+A production-ready Dockerfile is included. It compiles the app using Bun and serves the built Nitro `node-server` output with Node.js.
+
+```bash
+# Build image (pass VITE_* build args so client env vars are inlined)
+docker build \
+  --build-arg VITE_SUPABASE_URL="https://your-project.supabase.co" \
+  --build-arg VITE_SUPABASE_PUBLISHABLE_KEY="your-anon-key" \
+  --build-arg VITE_SUPABASE_PROJECT_ID="your-project-id" \
+  -t ecotrace:latest .
+
+# Run container (supply runtime secrets)
+docker run -p 3000:3000 \
+  -e LOVABLE_API_KEY="your-lovable-api-key" \
+  ecotrace:latest
+```
+
+The container exposes port **3000** by default.
+
+---
+
 ## 6. Project Structure
 
 ```
