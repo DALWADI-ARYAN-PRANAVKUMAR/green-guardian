@@ -2,6 +2,8 @@
 
 > A full-stack web application that helps individuals quantify, understand, and reduce their environmental impact through smart activity logging, real-time analytics, and an AI-powered carbon coach.
 
+🌱 **Live demo:** [https://green-guardian1.lovable.app/](https://green-guardian1.lovable.app/)
+
 ---
 
 ## 1. Chosen Vertical
