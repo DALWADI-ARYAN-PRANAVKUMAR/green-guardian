@@ -15,7 +15,7 @@ import { listActivities, deleteActivity } from "@/lib/activities.functions";
 import { CATEGORY_META, type Category } from "@/lib/emissions";
 
 export const Route = createFileRoute("/_authenticated/log")({
-  head: () => ({ meta: [{ title: "Activity Log — EcoTrace" }] }),
+  head: () => ({ meta: [{ title: "Activity Log — Green Guardian" }] }),
   component: ActivityLog,
 });
 

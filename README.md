@@ -1,4 +1,4 @@
-# EcoTrace — Personal Carbon Footprint Tracker
+# Green Guardian — Personal Carbon Footprint Tracker
 
 > A full-stack web application that helps individuals quantify, understand, and reduce their environmental impact through smart activity logging, real-time analytics, and an AI-powered carbon coach.
 
@@ -8,7 +8,7 @@
 
 **Climate Tech / Environmental Impact Tracking**
 
-EcoTrace sits at the intersection of **personal productivity** and **environmental stewardship**. The vertical was chosen because:
+Green Guardian sits at the intersection of **personal productivity** and **environmental stewardship**. The vertical was chosen because:
 
 - **High real-world relevance**: Every person generates a carbon footprint through transport, food, energy, and consumption choices.
 - **Data-driven behavior change**: Research shows that quantified self-tracking measurably shifts habits when feedback is immediate and personalized.
@@ -182,12 +182,12 @@ docker build \
   --build-arg VITE_SUPABASE_URL="https://your-project.supabase.co" \
   --build-arg VITE_SUPABASE_PUBLISHABLE_KEY="your-anon-key" \
   --build-arg VITE_SUPABASE_PROJECT_ID="your-project-id" \
-  -t ecotrace:latest .
+  -t green-guardian:latest .
 
 # Run container (supply runtime secrets)
 docker run -p 3000:3000 \
   -e LOVABLE_API_KEY="your-lovable-api-key" \
-  ecotrace:latest
+  green-guardian:latest
 ```
 
 The container exposes port **3000** by default.

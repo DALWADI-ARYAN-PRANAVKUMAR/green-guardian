@@ -39,7 +39,7 @@
   --color-warn: var(--warn);
   --color-warn-foreground: var(--warn-foreground);
 
-  /* EcoTrace specific surface tokens */
+  /* Green Guardian specific surface tokens */
   --color-surface: var(--surface);
   --color-surface-container: var(--surface-container);
   --color-surface-container-low: var(--surface-container-low);
@@ -81,7 +81,7 @@
 :root {
   --radius: 0.75rem;
 
-  /* EcoTrace palette — Verdant Data System */
+  /* Green Guardian palette — Verdant Data System */
   --background: oklch(0.97 0.04 110);                /* #f7fce3 cream */
   --foreground: oklch(0.20 0.04 160);                /* #191d0e */
   --card: oklch(1 0 0);                              /* white */

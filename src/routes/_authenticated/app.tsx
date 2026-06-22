@@ -25,7 +25,7 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 export const Route = createFileRoute("/_authenticated/app")({
-  head: () => ({ meta: [{ title: "Dashboard — EcoTrace" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Green Guardian" }] }),
   component: Dashboard,
 });
 

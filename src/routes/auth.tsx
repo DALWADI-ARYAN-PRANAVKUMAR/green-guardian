@@ -16,8 +16,8 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Sign in — EcoTrace" },
-      { name: "description", content: "Sign in to EcoTrace to track your carbon footprint and get personalized AI guidance." },
+      { title: "Sign in — Green Guardian" },
+      { name: "description", content: "Sign in to Green Guardian to track your carbon footprint and get personalized AI guidance." },
     ],
   }),
   component: AuthPage,
@@ -89,7 +89,7 @@ function AuthPage() {
             <span className="size-10 bg-tertiary-fixed rounded-lg grid place-items-center">
               <Leaf className="size-5 text-primary" />
             </span>
-            <span className="text-2xl font-bold text-white">EcoTrace</span>
+            <span className="text-2xl font-bold text-white">Green Guardian</span>
           </div>
           <div className="max-w-xl space-y-6">
             <div className="glass-dark p-7 rounded-xl space-y-3">
@@ -107,7 +107,7 @@ function AuthPage() {
               </div>
             </div>
           </div>
-          <div className="text-xs text-white/60">© EcoTrace. Environmental Stewardship through Data.</div>
+          <div className="text-xs text-white/60">© Green Guardian. Environmental Stewardship through Data.</div>
         </div>
       </section>
 
@@ -115,7 +115,7 @@ function AuthPage() {
       <section className="relative w-full md:w-1/2 lg:w-2/5 min-h-screen flex flex-col items-center justify-center px-6 md:px-10 bg-surface">
         <div className="md:hidden absolute top-6 left-6 flex items-center gap-2">
           <span className="size-8 rounded-md bg-primary text-primary-foreground grid place-items-center"><Leaf className="size-4" /></span>
-          <span className="text-lg font-bold text-primary">EcoTrace</span>
+          <span className="text-lg font-bold text-primary">Green Guardian</span>
         </div>
         <Link to="/" className="absolute top-6 right-6 flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-primary transition group">
           <span>Back to Home</span>

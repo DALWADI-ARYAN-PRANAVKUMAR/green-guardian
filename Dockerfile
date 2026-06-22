@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ─────────────────────────────────────────────
-# EcoTrace — Production Dockerfile
+# Green Guardian — Production Dockerfile
 # ─────────────────────────────────────────────
 # Multi-stage build:
 #   1. Builder   → compiles the TanStack Start app with Bun
