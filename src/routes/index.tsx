@@ -5,9 +5,9 @@ import { Leaf, ArrowRight, ChevronDown, Sparkles, BarChart3, ScrollText } from "
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "EcoTrace — Every Trace Tells a Story" },
+      { title: "Green Guardian — Every Trace Tells a Story" },
       { name: "description", content: "Quantify your environmental impact. Track your carbon footprint, get personalized AI insights, and weave your impact into a greener collective history." },
-      { property: "og:title", content: "EcoTrace — Personal carbon coach" },
+      { property: "og:title", content: "Green Guardian — Personal carbon coach" },
       { property: "og:description", content: "Log activities, see your footprint, and get AI-driven, no-judgment guidance grounded in your real data." },
     ],
   }),
@@ -33,7 +33,7 @@ function Landing() {
             <span className="size-9 rounded-lg bg-primary text-primary-foreground grid place-items-center">
               <Leaf className="size-5" />
             </span>
-            <h2 className="text-xl font-extrabold tracking-tight">EcoTrace</h2>
+            <h2 className="text-xl font-extrabold tracking-tight">Green Guardian</h2>
           </Link>
           <nav className="hidden md:flex items-center gap-10 text-sm font-semibold text-on-surface-variant">
             <a className="hover:text-primary" href="#mission">Mission</a>
@@ -136,7 +136,7 @@ function Landing() {
             <span className="text-on-tertiary-container bg-tertiary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 inline-block">Our Mission</span>
             <h2 className="text-4xl md:text-5xl font-extrabold text-primary leading-tight mb-6">Quantifying the Beauty of Preservation</h2>
             <p className="text-lg text-on-surface-variant leading-relaxed mb-6">
-              EcoTrace is more than an app; it's a movement to document and preserve our planet's beauty through collective action. When you can see your impact, you're empowered to change your story.
+              Green Guardian is more than an app; it's a movement to document and preserve our planet's beauty through collective action. When you can see your impact, you're empowered to change your story.
             </p>
             <Link to="/auth"><Button size="lg" className="rounded-xl font-bold">Create your account <ArrowRight className="size-4" /></Button></Link>
           </div>
@@ -160,7 +160,7 @@ function Landing() {
       </section>
 
       <footer className="border-t border-outline-variant px-6 sm:px-10 py-8 text-sm text-on-surface-variant flex justify-between max-w-screen-xl mx-auto">
-        <span>© EcoTrace · Environmental Stewardship through Data.</span>
+        <span>© Green Guardian · Environmental Stewardship through Data.</span>
         <span>Built with Lovable</span>
       </footer>
     </div>

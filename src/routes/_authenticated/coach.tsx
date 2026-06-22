@@ -11,7 +11,7 @@ import { listChatMessages, sendChatMessage, clearChat } from "@/lib/chat.functio
 import { listActivities } from "@/lib/activities.functions";
 
 export const Route = createFileRoute("/_authenticated/coach")({
-  head: () => ({ meta: [{ title: "AI Assistant — EcoTrace" }] }),
+  head: () => ({ meta: [{ title: "AI Assistant — Green Guardian" }] }),
   component: Coach,
 });
 

@@ -9,7 +9,7 @@ import { AppSidebar, MobileTopBar, MobileBottomNav } from "@/components/app-side
 
 export const Route = createFileRoute("/_authenticated/settings")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Settings — EcoTrace" }] }),
+  head: () => ({ meta: [{ title: "Settings — Green Guardian" }] }),
   component: SettingsPage,
 });
 

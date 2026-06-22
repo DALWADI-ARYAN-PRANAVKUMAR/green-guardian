@@ -27,7 +27,7 @@ export function AppSidebar() {
           <span className="size-9 rounded-lg bg-primary text-primary-foreground grid place-items-center">
             <Leaf className="size-5" />
           </span>
-          <span className="text-xl font-bold text-primary tracking-tight">EcoTrace</span>
+          <span className="text-xl font-bold text-primary tracking-tight">Green Guardian</span>
         </Link>
         <div className="flex items-center gap-3 mt-5 p-3 bg-surface-container-high rounded-xl">
           <div className="size-10 rounded-lg bg-tertiary-fixed grid place-items-center">
@@ -68,7 +68,7 @@ export function AppSidebar() {
         <Link to="/support" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition" activeProps={{ className: "bg-primary-container text-on-primary-container" }}>
           <LifeBuoy className="size-5" /> Support
         </Link>
-        <button onClick={signOut} aria-label="Sign out of EcoTrace" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition">
+        <button onClick={signOut} aria-label="Sign out of Green Guardian" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-high transition">
           <LogOut className="size-5" aria-hidden="true" /> Sign out
         </button>
       </div>
@@ -83,7 +83,7 @@ export function MobileTopBar({ title }: { title: string }) {
         <span className="size-8 rounded-md bg-primary text-primary-foreground grid place-items-center">
           <Leaf className="size-4" />
         </span>
-        <span className="font-bold text-primary">EcoTrace</span>
+        <span className="font-bold text-primary">Green Guardian</span>
       </Link>
       <span className="text-sm font-semibold text-on-surface-variant">{title}</span>
     </header>

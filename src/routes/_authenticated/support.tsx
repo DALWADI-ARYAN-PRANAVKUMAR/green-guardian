@@ -4,7 +4,7 @@ import { Mail, BookOpen, MessageCircle, Leaf } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/support")({
   ssr: false,
-  head: () => ({ meta: [{ title: "Support — EcoTrace" }] }),
+  head: () => ({ meta: [{ title: "Support — Green Guardian" }] }),
   component: SupportPage,
 });
 
@@ -15,7 +15,7 @@ const FAQS = [
   },
   {
     q: "What is a Paris-aligned daily target?",
-    a: "To stay within 1.5 °C of warming, the per-person budget is roughly 2.3 tonnes CO₂e/year — about 6.3 kg/day. EcoTrace compares your daily total to that figure.",
+    a: "To stay within 1.5 °C of warming, the per-person budget is roughly 2.3 tonnes CO₂e/year — about 6.3 kg/day. Green Guardian compares your daily total to that figure.",
   },
   {
     q: "Is my data private?",
@@ -40,10 +40,10 @@ function SupportPage() {
           </header>
 
           <section className="grid sm:grid-cols-3 gap-4 mb-10">
-            <a href="mailto:hello@ecotrace.app" className="bg-card border border-outline-variant rounded-2xl p-5 hover:border-primary transition custom-shadow">
+            <a href="mailto:hello@green-guardian.app" className="bg-card border border-outline-variant rounded-2xl p-5 hover:border-primary transition custom-shadow">
               <Mail className="size-5 text-primary mb-3" />
               <p className="font-bold text-foreground">Email us</p>
-              <p className="text-sm text-on-surface-variant mt-1">hello@ecotrace.app</p>
+              <p className="text-sm text-on-surface-variant mt-1">hello@green-guardian.app</p>
             </a>
             <a href="/coach" className="bg-card border border-outline-variant rounded-2xl p-5 hover:border-primary transition custom-shadow">
               <MessageCircle className="size-5 text-primary mb-3" />
